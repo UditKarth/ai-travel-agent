@@ -16,19 +16,19 @@ import { cn } from "@/lib/utils"
 const FEATURED_DESTINATIONS = [
   {
     name: "Paris, France",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/paris.jpg",
     description: "The City of Light beckons with its iconic architecture, world-class cuisine, and timeless romance.",
     tags: ["Culture", "Food", "Architecture"]
   },
   {
     name: "Kyoto, Japan",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/kyoto.jpg",
     description: "Ancient temples, traditional gardens, and centuries of culture create an unforgettable experience.",
     tags: ["Culture", "History", "Nature"]
   },
   {
     name: "Machu Picchu, Peru",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/machu%20picchu%20.jpg",
     description: "Discover the mysteries of the Incan Empire in this spectacular mountain-top citadel.",
     tags: ["Adventure", "History", "Nature"]
   }
