@@ -7,10 +7,11 @@ interface DestinationCardProps {
   image: string
   description: string
   tags: string[]
+  prompt?: string
   onClick: () => void
 }
 
-export function DestinationCard({ name, image, description, tags, onClick }: DestinationCardProps) {
+export function DestinationCard({ name, image, description, tags, prompt, onClick }: DestinationCardProps) {
   return (
     <Card 
       className="group cursor-pointer overflow-hidden border-white/10 bg-gray-900 transition-all hover:border-white/20"

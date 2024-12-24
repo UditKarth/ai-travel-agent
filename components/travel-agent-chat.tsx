@@ -18,19 +18,22 @@ const FEATURED_DESTINATIONS = [
     name: "Paris, France",
     image: "/paris.jpg",
     description: "The City of Light beckons with its iconic architecture, world-class cuisine, and timeless romance.",
-    tags: ["Culture", "Food", "Architecture"]
+    tags: ["Culture", "Food", "Architecture"],
+    prompt: "I'd like to visit Paris, France. Please suggest a trip that includes visits to the Eiffel Tower, Louvre Museum, Notre-Dame Cathedral, and some authentic French restaurants. Also check flights from JFK to CDG for next month. Include recommendations for romantic evening activities and the best time to visit."
   },
   {
     name: "Kyoto, Japan",
     image: "/kyoto.jpg",
     description: "Ancient temples, traditional gardens, and centuries of culture create an unforgettable experience.",
-    tags: ["Culture", "History", "Nature"]
+    tags: ["Culture", "History", "Nature"],
+    prompt: "I want to explore Kyoto, Japan. Please suggest an itinerary that includes major temples like Kinkaku-ji and Fushimi Inari, traditional tea ceremonies, and the best seasons to see cherry blossoms or autumn colors. Include recommendations for ryokan stays and local cuisine experiences."
   },
   {
     name: "Machu Picchu, Peru",
     image: "/machu%20picchu%20.jpg",
     description: "Discover the mysteries of the Incan Empire in this spectacular mountain-top citadel.",
-    tags: ["Adventure", "History", "Nature"]
+    tags: ["Adventure", "History", "Nature"],
+    prompt: "I'm interested in visiting Machu Picchu. Please suggest an itinerary that includes the best hiking routes, acclimatization tips, and the ideal time to visit. Include information about Cusco, the Sacred Valley, and how to best experience the Incan heritage."
   }
 ]
 
@@ -51,7 +54,12 @@ export function TravelAgentChat() {
         content: "Hello! I'm your AI travel agent. To get started, you can either tell me about your dream destination or set your travel preferences using the button above. Where would you like to go?"
       }
     ],
+    api: '/api/chat',
+    onResponse: async (response) => {
+      console.log('Response from API:', response);
+    },
     onFinish: (message) => {
+      console.log('Finished message:', message);
       if (message.content.includes("TRIP_SUMMARY:")) {
         try {
           const summaryJson = message.content.split("TRIP_SUMMARY:")[1]
@@ -78,9 +86,15 @@ export function TravelAgentChat() {
   }
 
   const handleDestinationSelect = (destination: string) => {
-    handleSubmit({ preventDefault: () => {} } as FormEvent<HTMLFormElement>, {
-      data: `I'm interested in traveling to ${destination}. Can you tell me more about it and suggest an itinerary?`
-    })
+    const selectedDestination = FEATURED_DESTINATIONS.find(dest => dest.name === destination);
+    if (selectedDestination) {
+      setIsExpanded(true);
+      setTimeout(() => {
+        handleSubmit({ preventDefault: () => {} } as FormEvent<HTMLFormElement>, {
+          data: selectedDestination.prompt
+        });
+      }, 100);
+    }
   }
 
   const handleMessageSubmit = (e: React.FormEvent) => {
