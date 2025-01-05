@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { StreamingTextResponse, Message } from 'ai';
 
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
     const query = messages[messages.length - 1].content;
 
+    // Get response from FastAPI backend
     const response = await axios.post('http://localhost:8000/query', { query });
     
     console.log('API Response:', response.data);
@@ -22,13 +22,9 @@ export async function POST(req: Request) {
       formattedContent = response.data.results;
     }
 
-    // Return the response in the format expected by the AI SDK
+    // Return formatted response
     return new Response(
-      JSON.stringify({
-        id: Date.now().toString(),
-        role: 'assistant',
-        content: formattedContent
-      }), 
+      JSON.stringify({ content: formattedContent }), 
       {
         headers: { 'Content-Type': 'application/json' },
       }
@@ -38,9 +34,7 @@ export async function POST(req: Request) {
     console.error('Error:', error);
     return new Response(
       JSON.stringify({
-        id: Date.now().toString(),
-        role: 'assistant',
-        content: "I apologize, but I encountered an error processing your request. Please try again."
+        content: "Sorry, I encountered an error processing your request. Please try again."
       }), 
       {
         status: 500,
