@@ -56,7 +56,8 @@ export function TravelAgentChat() {
     ],
     api: '/api/chat',
     onResponse: async (response) => {
-      console.log('Response from API:', response);
+      const data = await response.json();
+      console.log('Chat response:', data);
     },
     onFinish: (message) => {
       console.log('Finished message:', message);

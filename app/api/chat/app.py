@@ -10,6 +10,7 @@ from functools import partial
 
 app = FastAPI()
 load_dotenv(dotenv_path=".env.local")
+
 class QueryRequest(BaseModel):
     query: str
 
@@ -51,15 +52,15 @@ llm = HuggingFaceHub(
 async def query_agent(request: QueryRequest):
     try:
         if "flights" in request.query.lower():
-            results = await flight_search_tool.call(request.query)
+            results = await asyncio.to_thread(flight_search_tool.invoke, request.query)
             return {"type": "flights", "results": results}
 
         elif "hotels" in request.query.lower():
-            results = await hotel_search_tool.call(request.query)
+            results = await asyncio.to_thread(hotel_search_tool.invoke, request.query)
             return {"type": "hotels", "results": results}
 
         elif "plan" in request.query.lower() or "itinerary" in request.query.lower():
-            results = await trip_planning_tool.call(request.query)
+            results = await asyncio.to_thread(trip_planning_tool.invoke, request.query)
             return {"type": "trip_planning", "results": results}
 
         else:
